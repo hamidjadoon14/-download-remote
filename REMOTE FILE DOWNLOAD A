@@ -1,0 +1,39 @@
+<?php
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $fileUrl = $_POST['file_url'];
+
+    // Generate a unique filename for the downloaded file
+    $fileName = uniqid() . '_' . basename($fileUrl);
+
+    // Download the file
+    $fileContent = file_get_contents($fileUrl);
+
+    if ($fileContent !== false) {
+        // Specify the directory where you want to save the downloaded file
+        $savePath = 'path/to/save/folder/' . $fileName;
+
+        // Save the file locally
+        if (file_put_contents($savePath, $fileContent)) {
+            echo "File downloaded and saved successfully!";
+        } else {
+            echo "Error saving the file locally.";
+        }
+    } else {
+        echo "Error downloading the file.";
+    }
+}
+?>
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Remote File Downloader</title>
+</head>
+<body>
+    <form method="post" action="">
+        <label for="file_url">Enter the remote file URL:</label>
+        <input type="text" name="file_url" id="file_url" required>
+        <button type="submit">Download</button>
+    </form>
+</body>
+</html>
